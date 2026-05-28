@@ -9,19 +9,6 @@ This repository hosts the **DairyDesk download website** — a simple landing pa
 - Learn about the app's features
 - Download the latest Android APK directly
 
-## Files
-
-| File | Description |
-|------|-------------|
-| `index.html` | Landing page with features, install guide, and download link |
-| `app-hero.png` | Hero image used on the landing page |
-| `DairyDesk.apk` | Latest Android APK build |
-
-## Deployment
-
-This site is deployed via **GitHub Pages** from the `main` branch.
-
-🔗 **Live Site**: [https://singhansh07.github.io/DairyDesk/](https://singhansh07.github.io/DairyDesk/)
 
 ---
 
