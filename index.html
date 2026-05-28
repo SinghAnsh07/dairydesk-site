@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DairyDesk – Dairy Management App</title>
+  <meta name="description"
+    content="DairyDesk – The smartest dairy milk collection & ledger management app for Indian aggregators. Track suppliers, milk entries, payments and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --brown-dark: #3b1f0e;
+      --brown: #5c2d0e;
+      --brown-mid: #7a3b12;
+      --brown-light: #a0521e;
+      --cream: #fdf5ec;
+      --cream-dark: #f0e0c8;
+      --cream-mid: #e8ccb0;
+      --text: #2a1505;
+      --text-muted: #7a5c42;
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 48px;
+      background: rgba(253, 245, 236, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(92, 45, 14, 0.1);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--brown-dark);
+      text-decoration: none;
+    }
+
+    .nav-logo span {
+      font-size: 1.6rem;
+    }
+
+    nav a.btn-nav {
+      background: var(--brown-dark);
+      color: var(--white);
+      padding: 10px 22px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    nav a.btn-nav:hover {
+      background: var(--brown-mid);
+      transform: translateY(-1px);
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      background:
+        radial-gradient(ellipse at 70% 50%, rgba(92, 45, 14, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 10% 80%, rgba(160, 82, 30, 0.06) 0%, transparent 50%),
+        var(--cream);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(92, 45, 14, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(92, 45, 14, 0.08);
+      border: 1px solid rgba(92, 45, 14, 0.15);
+      border-radius: 50px;
+      padding: 6px 16px;
+      margin-bottom: 24px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--brown-mid);
+    }
+
+    .hero-badge::before {
+      content: '🐄';
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--brown-dark);
+      margin-bottom: 20px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--brown-mid);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--brown-dark);
+      color: var(--white);
+      padding: 16px 32px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(59, 31, 14, 0.3);
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0);
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(59, 31, 14, 0.4);
+    }
+
+    .btn-primary:hover::after {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .btn-primary svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 2px solid rgba(92, 45, 14, 0.3);
+      color: var(--brown-dark);
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--brown-dark);
+      background: rgba(92, 45, 14, 0.04);
+    }
+
+    .hero-image-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-image-wrap::before {
+      content: '';
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(92, 45, 14, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .hero-img {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      box-shadow: 0 32px 80px rgba(59, 31, 14, 0.25);
+      position: relative;
+      z-index: 1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-16px);
+      }
+    }
+
+    /* ─── STATS BAR ───────────────────────────────────── */
+    .stats-bar {
+      background: var(--brown-dark);
+      padding: 40px 48px;
+      display: flex;
+      justify-content: center;
+      gap: 80px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--cream);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(253, 245, 236, 0.55);
+      margin-top: 4px;
+    }
+
+    /* ─── FEATURES ────────────────────────────────────── */
+    .section {
+      padding: 100px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--brown-mid);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--brown-dark);
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 56px;
+    }
+
+    .feature-card {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 32px;
+      border: 1px solid rgba(92, 45, 14, 0.07);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--brown-mid), var(--brown-light));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(59, 31, 14, 0.1);
+    }
+
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--brown-dark), var(--brown-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--brown-dark);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ─── HOW TO INSTALL ──────────────────────────────── */
+    .install-section {
+      background: var(--brown-dark);
+      padding: 100px 48px;
+    }
+
+    .install-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .install-section .section-title {
+      color: var(--cream);
+    }
+
+    .install-section .section-sub {
+      color: rgba(253, 245, 236, 0.6);
+    }
+
+    .install-section .section-tag {
+      color: var(--cream-mid);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-top: 56px;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(253, 245, 236, 0.1);
+      border: 2px solid rgba(253, 245, 236, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .step-desc {
+      font-size: 0.88rem;
+      color: rgba(253, 245, 236, 0.55);
+      line-height: 1.65;
+    }
+
+    /* ─── DOWNLOAD CTA ────────────────────────────────── */
+    .cta {
+      padding: 100px 48px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(92, 45, 14, 0.07) 0%, transparent 60%),
+        var(--cream);
+    }
+
+    .cta .section-title {
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
+
+    .cta .section-sub {
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .download-note {
+      margin-top: 24px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: var(--brown-dark);
+      padding: 40px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    footer .logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--cream);
+    }
+
+    footer p {
+      font-size: 0.83rem;
+      color: rgba(253, 245, 236, 0.45);
+    }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 14px 20px;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+      }
+
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+
+      .hero-sub,
+      .hero-badge {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero-image-wrap {
+        order: -1;
+      }
+
+      .hero-img {
+        max-width: 280px;
+      }
+
+      .stats-bar {
+        gap: 40px;
+        padding: 40px 20px;
+      }
+
+      .section,
+      .cta {
+        padding: 60px 20px;
+      }
+
+      .install-section {
+        padding: 60px 20px;
+      }
+
+      footer {
+        padding: 32px 20px;
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo"><span>🥛</span> DairyDesk</a>
+    <a href="#download" class="btn-nav">
+      Download App
+    </a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">Free for Dairy Aggregators</div>
+        <h1>दूध का हिसाब,<br /><em>आसान और सटीक</em></h1>
+        <p class="hero-sub">
+          DairyDesk is a complete dairy milk collection &amp; ledger management app built for Indian aggregators.
+          Track suppliers, record daily entries, manage payments — all offline.
+        </p>
+        <div class="hero-buttons">
+          <a href="#download" class="btn-primary" id="hero-download-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 16l-5-5m5 5l5-5m-5 5V4" />
+              <path d="M20 21H4" stroke-linecap="round" />
+            </svg>
+            Download APK
+          </a>
+          <a href="#features" class="btn-secondary">See Features →</a>
+        </div>
+      </div>
+      <div class="hero-image-wrap">
+        <img src="app-hero.png" alt="DairyDesk App Screenshot" class="hero-img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Works Offline</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Free</div>
+      <div class="stat-label">No Hidden Charges</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Secure</div>
+      <div class="stat-label">PIN Protected</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">हिंदी</div>
+      <div class="stat-label">Hindi + English</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <div class="section-tag">Features</div>
+    <h2 class="section-title">Everything a dairy needs</h2>
+    <p class="section-sub">Built from the ground up for Indian dairy aggregators, with all the tools you need to run
+      your business.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🥛</div>
+        <div class="feature-title">Daily Milk Entry</div>
+        <div class="feature-desc">Record morning and evening milk collections from each supplier with litres, fat %, and
+          rate auto-calculated.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👨‍🌾</div>
+        <div class="feature-title">Supplier Management</div>
+        <div class="feature-desc">Add and manage all your suppliers in one place. View their complete history,
+          outstanding dues, and payment records.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Live Ledger</div>
+        <div class="feature-desc">Auto-generated ledger for each supplier showing credits, debits, and running balance —
+          always up to date.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">Payment Tracking</div>
+        <div class="feature-desc">Record advance payments, deductions, and final settlements. Never lose track of who
+          owes what.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">PIN Login</div>
+        <div class="feature-desc">Your data is protected with a 4-digit PIN. Safe, fast, and secure — even without
+          internet.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <div class="feature-title">Cloud Sync</div>
+        <div class="feature-desc">All data syncs to the cloud when online. Log in on any device and your data is there
+          waiting for you.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW TO INSTALL -->
+  <div class="install-section" id="how-to-install">
+    <div class="install-inner">
+      <div class="section-tag">Installation Guide</div>
+      <h2 class="section-title">Install in 3 simple steps</h2>
+      <p class="section-sub">DairyDesk is distributed as an Android APK. Follow these steps to install it on your phone.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Download the APK</div>
+          <div class="step-desc">Tap the Download button on this page. Your phone will download the <code
+              style="color:rgba(253,245,236,0.8);font-size:0.85em">DairyDesk.apk</code> file.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Allow Unknown Sources</div>
+          <div class="step-desc">Go to <strong style="color:var(--cream)">Settings → Security → Install Unknown
+              Apps</strong> and allow installation from your browser.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Install &amp; Open</div>
+          <div class="step-desc">Open the downloaded file, tap Install, then open DairyDesk and create your account with
+            your email.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DOWNLOAD CTA -->
+  <section class="cta" id="download">
+    <div class="section-tag">Get the App</div>
+    <h2 class="section-title">Ready to manage your dairy smarter?</h2>
+    <p class="section-sub">Free to download. Works offline. No subscription required to get started.</p>
+    <div class="cta-buttons">
+      <a href="DairyDesk.apk" class="btn-primary" download id="main-download-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M12 16l-5-5m5 5l5-5m-5 5V4" />
+          <path d="M20 21H4" stroke-linecap="round" />
+        </svg>
+        Download for Android (APK)
+      </a>
+    </div>
+    <div class="download-note">
+      📱 Android 6.0+ required &nbsp;·&nbsp; ~30 MB &nbsp;·&nbsp; Version 1.0.0
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">🥛 DairyDesk</div>
+    <p>© <span id="current-year">2026</span> DairyDesk. Built with ❤️ by Ansh for Indian dairy farmers.</p>
+  </footer>
+
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+
+</html>
